@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package M;
 
 import java.sql.Connection;
@@ -10,10 +7,10 @@ import java.sql.SQLException;
 
 public class DBConnectionJava {
      // Constructor to establish a connection to the database
-    static String bd = "project1";
+    static String bd = "projectux";
     static String port = "3306";
     static String login = "root";
-    static String password = "Jairo8553";
+    static String password = "m0r3r@2002";
     static String url = "jdbc:mariadb://localhost:" + port + "/" + bd;
 
     Connection connection = null;

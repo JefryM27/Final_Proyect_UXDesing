@@ -27,6 +27,10 @@ public class candidate {
         this.politicParty = politicParty;
     }
 
+    public candidate() {
+    }
+    
+    
     public int getId() {
         return id;
     }

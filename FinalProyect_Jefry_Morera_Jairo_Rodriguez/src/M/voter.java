@@ -30,6 +30,11 @@ public class voter {
         this.phoneNumber = phoneNumber;
     }
 
+    public voter() {
+    }
+    
+    
+
     public int getId() {
         return id;
     }
