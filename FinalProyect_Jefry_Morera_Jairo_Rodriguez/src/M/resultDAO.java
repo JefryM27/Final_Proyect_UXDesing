@@ -8,13 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jefry
- */
+
 public class resultDAO {
     // Method to create a new result record in the database
-    public void createVoter(result result) {
+    public void createResult(result result) {
         DBConnectionJava db = new DBConnectionJava();
         String consultaSQL = "INSERT INTO results (id_voter, id_candidate) VALUES (?, ?)";
         try {

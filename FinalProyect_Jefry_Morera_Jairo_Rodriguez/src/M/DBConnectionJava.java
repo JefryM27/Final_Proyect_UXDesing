@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 public class DBConnectionJava {
      // Constructor to establish a connection to the database
-    static String bd = "projectux";
+    static String bd = "proyectux";
     static String port = "3306";
     static String login = "root";
-    static String password = "m0r3r@2002";
+    static String password = "Jairo8553";
     static String url = "jdbc:mariadb://localhost:" + port + "/" + bd;
 
     Connection connection = null;

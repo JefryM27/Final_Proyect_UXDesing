@@ -8,14 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jefry
- */
+
 public class userDAO {
     
     // Method to create a new result record in the database
-    public void createVoter(user user) {
+    public void createUser(user user) {
         DBConnectionJava db = new DBConnectionJava();
         String consultaSQL = "INSERT INTO users (name, password) VALUES (?, ?)";
         try {
@@ -44,7 +41,7 @@ public class userDAO {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String password = resultSet.getString("password");
-                user.add(new user(id, name, password));
+                users.add(new user(id, name, password));
             }
         } catch (SQLException e) {
             System.err.println("Error: " + e.getMessage());

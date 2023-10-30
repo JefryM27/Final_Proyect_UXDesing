@@ -1,10 +1,7 @@
 
 package M;
 
-/**
- *
- * @author jefry
- */
+
 public class result {
     private int Id;
     private int voterId;
