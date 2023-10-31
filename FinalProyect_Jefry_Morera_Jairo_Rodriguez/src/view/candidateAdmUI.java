@@ -30,7 +30,7 @@ public class candidateAdmUI extends javax.swing.JFrame {
         txtIdNumberCandidate = new javax.swing.JTextField();
         txtAgeCandidate = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtCandidateName = new javax.swing.JTextField();
         txtPoliticCandidate = new javax.swing.JTextField();
         btnDeleteCandidate = new javax.swing.JButton();
         btnAddCandidate = new javax.swing.JButton();
@@ -102,12 +102,12 @@ public class candidateAdmUI extends javax.swing.JFrame {
         });
         txtNameCandidate.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 160, -1));
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        txtCandidateName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                txtCandidateNameActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 160, -1));
+        txtNameCandidate.add(txtCandidateName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 160, -1));
 
         txtPoliticCandidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,9 +155,9 @@ public class candidateAdmUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtCandidateNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCandidateNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_txtCandidateNameActionPerformed
 
     private void txtPoliticCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoliticCandidateActionPerformed
         // TODO add your handling code here:
@@ -176,9 +176,9 @@ public class candidateAdmUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTable tblCandidate;
     private javax.swing.JTextField txtAgeCandidate;
+    private javax.swing.JTextField txtCandidateName;
     private javax.swing.JTextField txtIdNumberCandidate;
     private javax.swing.JTextField txtImageCandidate;
     private javax.swing.JPanel txtNameCandidate;

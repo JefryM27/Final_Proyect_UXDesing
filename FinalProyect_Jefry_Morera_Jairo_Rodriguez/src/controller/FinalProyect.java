@@ -1,6 +1,6 @@
-package C;
+package controller;
 
-import M.DBConnectionJava;
+import model.DBConnectionJava;
 import V.*;
 public class FinalProyect {
 

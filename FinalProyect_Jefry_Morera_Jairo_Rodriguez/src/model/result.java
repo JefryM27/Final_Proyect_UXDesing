@@ -1,5 +1,5 @@
 
-package M;
+package model;
 
 
 public class result {
