@@ -1,13 +1,13 @@
 package controller;
 
 import model.DBConnectionJava;
-import V.*;
+import view.*;
 public class FinalProyect {
 
     public static void main(String[] args) {
         
-        loginGeneral login = new loginGeneral();
-        login.setVisible(true);
+        candidateAdmUI ca = new candidateAdmUI();
+        ca.setVisible(true);
         
         /*DBConnectionJava db = new DBConnectionJava();
         db.getConnection();

@@ -2,17 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package V;
+package view;
 
+import controller.CtrlCandidate;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.JLabel;
 
 public class candidateAdmUI extends javax.swing.JFrame {
 
-   
+    CtrlCandidate ctc = new CtrlCandidate();
+    private File selectedImageFile;
+
     public candidateAdmUI() {
         initComponents();
+        ctc.initUI(lblImage);
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -26,7 +33,6 @@ public class candidateAdmUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCandidate = new javax.swing.JTable();
-        txtImageCandidate = new javax.swing.JTextField();
         txtIdNumberCandidate = new javax.swing.JTextField();
         txtAgeCandidate = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
@@ -35,6 +41,8 @@ public class candidateAdmUI extends javax.swing.JFrame {
         btnDeleteCandidate = new javax.swing.JButton();
         btnAddCandidate = new javax.swing.JButton();
         btnEditCandidate = new javax.swing.JButton();
+        lblImage = new javax.swing.JLabel();
+        btnExaminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,7 +56,7 @@ public class candidateAdmUI extends javax.swing.JFrame {
         txtNameCandidate.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
 
         jLabel3.setText("Imagen:");
-        txtNameCandidate.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, -1, -1));
+        txtNameCandidate.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
 
         jLabel4.setText("Nombre:");
         txtNameCandidate.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
@@ -73,13 +81,6 @@ public class candidateAdmUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblCandidate);
 
         txtNameCandidate.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 1040, 340));
-
-        txtImageCandidate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtImageCandidateActionPerformed(evt);
-            }
-        });
-        txtNameCandidate.add(txtImageCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 160, -1));
 
         txtIdNumberCandidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,13 +118,39 @@ public class candidateAdmUI extends javax.swing.JFrame {
         txtNameCandidate.add(txtPoliticCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 160, -1));
 
         btnDeleteCandidate.setText("Eliminar");
+        btnDeleteCandidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteCandidateActionPerformed(evt);
+            }
+        });
         txtNameCandidate.add(btnDeleteCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 200, -1, -1));
 
         btnAddCandidate.setText("Agregar");
+        btnAddCandidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCandidateActionPerformed(evt);
+            }
+        });
         txtNameCandidate.add(btnAddCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 80, -1, -1));
 
         btnEditCandidate.setText("Editar");
+        btnEditCandidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditCandidateActionPerformed(evt);
+            }
+        });
         txtNameCandidate.add(btnEditCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 140, -1, -1));
+
+        lblImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        txtNameCandidate.add(lblImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 180, 130));
+
+        btnExaminar.setText("Examinar");
+        btnExaminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExaminarActionPerformed(evt);
+            }
+        });
+        txtNameCandidate.add(btnExaminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 150, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,10 +165,6 @@ public class candidateAdmUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtImageCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtImageCandidateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtImageCandidateActionPerformed
 
     private void txtIdNumberCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdNumberCandidateActionPerformed
         // TODO add your handling code here:
@@ -162,12 +185,29 @@ public class candidateAdmUI extends javax.swing.JFrame {
     private void txtPoliticCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPoliticCandidateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPoliticCandidateActionPerformed
- 
+
+    private void btnAddCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCandidateActionPerformed
+        ctc.addCandidate(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate, selectedImageFile);
+    }//GEN-LAST:event_btnAddCandidateActionPerformed
+
+    private void btnEditCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCandidateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditCandidateActionPerformed
+
+    private void btnDeleteCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCandidateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteCandidateActionPerformed
+
+    private void btnExaminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExaminarActionPerformed
+        ctc.examinarImagen();
+    }//GEN-LAST:event_btnExaminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCandidate;
     private javax.swing.JButton btnDeleteCandidate;
     private javax.swing.JButton btnEditCandidate;
+    private javax.swing.JButton btnExaminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -176,11 +216,11 @@ public class candidateAdmUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblImage;
     private javax.swing.JTable tblCandidate;
     private javax.swing.JTextField txtAgeCandidate;
     private javax.swing.JTextField txtCandidateName;
     private javax.swing.JTextField txtIdNumberCandidate;
-    private javax.swing.JTextField txtImageCandidate;
     private javax.swing.JPanel txtNameCandidate;
     private javax.swing.JTextField txtPoliticCandidate;
     // End of variables declaration//GEN-END:variables

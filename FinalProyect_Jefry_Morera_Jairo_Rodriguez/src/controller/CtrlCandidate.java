@@ -1,16 +1,20 @@
 package controller;
 
-import Controller.Validation;
+import controller.Validation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -18,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import model.candidate;
 import model.candidateDAO;
@@ -28,10 +33,16 @@ public class CtrlCandidate {
     private int id;
     private JTable table;
     private JScrollPane scrollPane;
+    private JLabel lblImage;
 
     public CtrlCandidate() {
         table = new JTable();
         scrollPane = new JScrollPane(table);
+
+    }
+
+    public void initUI(JLabel lblImage) {
+        this.lblImage = lblImage;
     }
 
     // Método para agregar un nuevo candidato
@@ -43,10 +54,13 @@ public class CtrlCandidate {
                 } else {
                     if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
                             && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
-                        candidateDAO.createCandidate(new candidate(Integer.parseInt(idNumber.getText()),name.getText(), 
+
+                        candidateDAO.createCandidate(new candidate(Integer.parseInt(idNumber.getText()), name.getText(),
                                 Integer.parseInt(age.getText()), politicParty.getText()), imageFile);
+
                         clearFields(name, idNumber, age, politicParty);
                         refreshTable(table, scrollPane);
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                     }
@@ -56,6 +70,29 @@ public class CtrlCandidate {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
+        }
+    }
+
+    public void examinarImagen() {
+        if (lblImage == null) {
+            System.out.println("lblImage es null");
+            return;
+        }
+
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "png", "gif");
+        fileChooser.setFileFilter(filter);
+
+        int returnVal = fileChooser.showOpenDialog(null);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedImageFile = fileChooser.getSelectedFile();
+
+            try {
+                lblImage.setIcon(new ImageIcon(ImageIO.read(selectedImageFile)));
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error al cargar la imagen: " + e.getMessage());
+            }
         }
     }
 

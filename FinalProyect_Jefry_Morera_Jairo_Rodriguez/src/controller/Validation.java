@@ -1,5 +1,5 @@
 
-package Controller;
+package controller;
 
 import model.DBConnectionJava;
 import java.sql.PreparedStatement;
