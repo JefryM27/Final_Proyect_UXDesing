@@ -32,14 +32,14 @@ public class loginGeneral extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Elija una opcion:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setText("Bienvenido");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, -1, -1));
 
         btnVoter.setText("Votante");
-        jPanel1.add(btnVoter, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 130, -1));
+        jPanel1.add(btnVoter, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 130, -1));
 
         btnAdministrator.setText("Administración");
         btnAdministrator.addActionListener(new java.awt.event.ActionListener() {

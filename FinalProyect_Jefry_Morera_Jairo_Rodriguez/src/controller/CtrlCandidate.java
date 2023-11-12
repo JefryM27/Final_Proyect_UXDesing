@@ -1,4 +1,3 @@
-
 package controller;
 
 import Controller.Validation;
@@ -6,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -18,141 +18,113 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import model.candidate;
 import model.candidateDAO;
 
-/**
- *
- * @author jefry
- */
 public class CtrlCandidate {
-    candidateDAO candidate = new candidateDAO();
-    int id;
-    //Method to add new candidate
-    public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty) {
-       //Get the id number and validate if is equals to nine
-        if (idNumber.getText().length() == 9) {
-            //Get the id number and verify if the candidates is already 
-            if (Validation.verificateCandidateExist(idNumber.getText())) {
-                JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe.");
-            } else {
-                try {
-                    if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText()) || !Validation.validateLyrics(name.getText()) || !Validation.validateLyrics(politicParty.getText())) {
-                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
-                    } else {
-                        this.candidate.updateCandidate(new candidate(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), politicParty.getText()));
-                        clearFields(name, idNumber, age, politicParty);
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "La longitud de la cédula  no es valido, esta debe tener 9 digitos.");
-        }
+
+    private candidateDAO candidateDAO = new candidateDAO();
+    private int id;
+    private JTable table;
+    private JScrollPane scrollPane;
+
+    public CtrlCandidate() {
+        table = new JTable();
+        scrollPane = new JScrollPane(table);
     }
-  //Method to update the candidaties from the table 
-    public void updateCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty) {
-        //Get the id number and validate if is equals to nine
-        if (idNumber.getText().length() == 9) {
-            //Get the legal id and verify if the candidate is already 
-            if (Validation.verificateCandidateExist(idNumber.getText())) {
-                JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe en la base de datos.");
-            } else {
-                try {
-                    if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText()) || !Validation.validateLyrics(name.getText()) || !Validation.validateLyrics(politicParty.getText())) {
-                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
-                    } else {
-                        this.candidate.createCandidate(new candidate(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), politicParty.getText()));
-                        clearFields(name, idNumber, age, politicParty);
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "La longitud de la cédula no es valido, esta debe tener 9 digitos.");
-        }
-    }
-//Method to select and access a table row 
-    public void selectedRow(JTable table, JTextField name, JTextField idNumber, JTextField age, JTextField politicParty) {
+
+    // Método para agregar un nuevo candidato
+    public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File imageFile) {
         try {
-            int row = table.getSelectedRow();
-            if (row >= 0) {
-                this.id = Integer.parseInt(table.getValueAt(row, 0).toString());
-                name.setText(table.getValueAt(row, 1).toString());
-                idNumber.setText(table.getValueAt(row, 2).toString());
-                age.setText(table.getValueAt(row, 3).toString());
-                politicParty.setText(table.getValueAt(row, 4).toString());
+            if (idNumber.getText().length() == 9) {
+                if (Validation.verifyCandidateExist(idNumber.getText())) {
+                    JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe.");
+                } else {
+                    if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
+                            && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
+                        candidateDAO.createCandidate(new candidate(Integer.parseInt(idNumber.getText()),name.getText(), 
+                                Integer.parseInt(age.getText()), politicParty.getText()), imageFile);
+                        clearFields(name, idNumber, age, politicParty);
+                        refreshTable(table, scrollPane);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
+                    }
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Fila no seleccionada");
+                JOptionPane.showMessageDialog(null, "La longitud de la cédula no es válida, esta debe tener 9 dígitos.");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error de selección, error: " + e.toString());
+            JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
         }
     }
- //Method to remove an candidate from the table
-    public void deleteCandidate() {
-        this.candidate.deleteCandidate(id);
+
+    // Método para actualizar un candidato
+    public void updateCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File newImageFile) {
+        try {
+            if (idNumber.getText().length() == 9) {
+                if (Validation.verifyCandidateExist(idNumber.getText())) {
+                    JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe en la base de datos.");
+                } else {
+                    if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
+                            && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
+                        candidateDAO.updateCandidate(new candidate(id, Integer.parseInt(idNumber.getText()), name.getText(),
+                                Integer.parseInt(age.getText()), politicParty.getText()), newImageFile);
+                        clearFields(name, idNumber, age, politicParty);
+                        refreshTable(table, scrollPane);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La longitud de la cédula no es válida, esta debe tener 9 dígitos.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar el candidato, error: " + e.toString());
+        }
     }
- //Method to clean the table fields 
+
+    // Método para eliminar un candidato
+    public void deleteCandidate() {
+        candidateDAO.deleteCandidate(id);
+        refreshTable(table, scrollPane);
+    }
+
+    // Método para limpiar los campos del formulario
     public void clearFields(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty) {
         name.setText("");
         idNumber.setText("");
         age.setText("");
         politicParty.setText("");
     }
-    private void displayCantidates(List<candidate> candidates, JScrollPane scrollPane) {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        for (candidate candi : candidates) {
-            JPanel candidatePanel = new JPanel();
-            candidatePanel.setPreferredSize(new Dimension(1224, 300));
-            candidatePanel.setBorder(BorderFactory.createTitledBorder(candi.getName()));
-            candidatePanel.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
+    // Método para actualizar la tabla de candidatos
+    public void refreshTable(JTable table, JScrollPane scrollPane) {
+        List<candidate> candidates = candidateDAO.readCandidates();
+        displayCandidates(candidates, scrollPane);
+    }
 
-            // JLabel for ID
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            candidatePanel.add(new JLabel("ID: " + candi.getId()), gbc);
+    // Método para mostrar los candidatos en la interfaz
+    private void displayCandidates(List<candidate> candidates, JScrollPane scrollPane) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Nombre");
+        model.addColumn("Cedula");
+        model.addColumn("Edad");
+        model.addColumn("Partido Politico");
 
-            // JLabel for Name
-            gbc.gridy++;
-            candidatePanel.add(new JLabel("Nombre: " + candi.getName()), gbc);
-
-            // JLabel for Category
-            gbc.gridy++;
-            candidatePanel.add(new JLabel("Cedula: " + candi.getIdNumber()), gbc);
-
-            // JLabel for Instructions
-            gbc.gridy++;
-            candidatePanel.add(new JLabel("Edad: " + candi.getAge()), gbc);
-            
-
-            gbc.gridy++;
-            candidatePanel.add(new JLabel("Partido Politico: " + candi.getPoliticParty()),gbc);
-
-            /** JLabel for Image
-            gbc.gridy++;
-            try {
-                URL url = new URL(cocktail.getImageUrl());
-                ImageIcon icon = new ImageIcon(url);
-                Image originalImage = icon.getImage();
-                Image resizedImage = originalImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-                ImageIcon resizedIcon = new ImageIcon(resizedImage);
-
-                JLabel imageLabel = new JLabel(resizedIcon);
-
-                cocktailPanel.add(imageLabel, gbc);
-            } catch (Exception e) {
-                cocktailPanel.add(new JLabel("Image not available"), gbc);
-            }*/
-
-            mainPanel.add(candidatePanel);
+        for (candidate candidate : candidates) {
+            model.addRow(new Object[]{
+                candidate.getId(),
+                candidate.getName(),
+                candidate.getIdNumber(),
+                candidate.getAge(),
+                candidate.getPoliticParty()
+            });
         }
 
-        scrollPane.setViewportView(mainPanel);
+        table.setModel(model);
+        scrollPane.setViewportView(table);
     }
+
 }

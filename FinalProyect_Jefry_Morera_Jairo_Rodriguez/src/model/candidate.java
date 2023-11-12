@@ -4,47 +4,34 @@
  */
 package model;
 
-
 public class candidate {
+
     private int id;
-    private String name;
     private int idNumber;
+    private String name;
     private int age;
     private String politicParty;
 
-    public candidate(int id, String name, int idNumber, int age, String politicParty) {
+    public candidate(int id, int idNumber, String name, int age, String politicParty) {
         this.id = id;
-        this.name = name;
         this.idNumber = idNumber;
+        this.name = name;
         this.age = age;
         this.politicParty = politicParty;
     }
 
-    public candidate(String name, int idNumber, int age, String politicParty) {
-        this.name = name;
+    public candidate(int idNumber, String name, int age, String politicParty) {
         this.idNumber = idNumber;
+        this.name = name;
         this.age = age;
         this.politicParty = politicParty;
     }
 
-    public candidate() {
-    }
     
-    
+
+    // Getters y Setters
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getIdNumber() {
@@ -53,6 +40,14 @@ public class candidate {
 
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAge() {
@@ -70,6 +65,6 @@ public class candidate {
     public void setPoliticParty(String politicParty) {
         this.politicParty = politicParty;
     }
-    
-    
 }
+
+

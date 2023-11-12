@@ -7,10 +7,7 @@ import javax.swing.JTextField;
 import model.user;
 import model.userDAO;
 
-/**
- *
- * @author jefry
- */
+
 public class CtrlUser {
 
     userDAO user = new userDAO();
@@ -20,7 +17,7 @@ public class CtrlUser {
     public void addUser(JTextField name, JTextField password) {
 
         try {
-            if (!Validation.validateLyrics(name.getText())) {
+            if (!Validation.validateLetters(name.getText())) {
                 JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
             } else {
                 this.user.createUser(new user(name.getText(), password.getText()));
@@ -33,7 +30,7 @@ public class CtrlUser {
     //Method to update the users from the table 
     public void updateUser(JTextField name, JTextField password) {
         try {
-            if (!Validation.validateLyrics(name.getText())) {
+            if (!Validation.validateLetters(name.getText())) {
                 JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
             } else {
                 this.user.updateUser(new user(name.getText(), password.getText()));

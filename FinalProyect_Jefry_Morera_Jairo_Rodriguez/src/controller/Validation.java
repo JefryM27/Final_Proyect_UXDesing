@@ -8,12 +8,9 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import model.DBConnectionJava;
 
-/**
- *
- * @author Bravo
- */
+
 public class Validation {
-    public static boolean validateLyrics(String value) {
+    public static boolean validateLetters(String value) {
         String regex = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$";
         return value.matches(regex);
     }
@@ -23,7 +20,7 @@ public class Validation {
         return value.matches(regex);
     }
 
-    public static boolean verificateCandidateExist(String idNumber) {
+    public static boolean verifyCandidateExist(String idNumber) {
         DBConnectionJava db = new DBConnectionJava();
         String consultaSQL = "SELECT COUNT(*) FROM candidates WHERE id_number = ?";
 

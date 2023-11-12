@@ -26,7 +26,7 @@ public class CtrlVoter {
                 try {
                     if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText())||
                         !Validation.validateNumbers(phoneNumber.getText()) ||
-                        !Validation.validateLyrics(name.getText())) {
+                        !Validation.validateLetters(name.getText())) {
                         JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                     } else {
                         this.voter.updateVoter(new voter(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
@@ -45,12 +45,12 @@ public class CtrlVoter {
         //Get the id number and validate if is equals to nine
         if (idNumber.getText().length() == 9) {
             //Get the legal id and verify if the voter is already 
-            if (Validation.verificateCandidateExist(idNumber.getText())) {
+            if (Validation.verifyCandidateExist(idNumber.getText())) {
                 JOptionPane.showMessageDialog(null, "El votante que desea registrar ya existe en la base de datos.");
             } else {
                 try {
                     if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText()) || 
-                        !Validation.validateLyrics(name.getText()) || !Validation.validateNumbers(phoneNumber.getText())) {
+                        !Validation.verifyCandidateExist(name.getText()) || !Validation.validateNumbers(phoneNumber.getText())) {
                         JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                     } else {
                         this.voter.updateVoter(new voter(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
