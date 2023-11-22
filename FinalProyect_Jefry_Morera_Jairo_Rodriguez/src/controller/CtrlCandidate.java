@@ -45,29 +45,27 @@ public class CtrlCandidate {
         this.lblImage = lblImage;
     }
 
-    // Método para agregar un nuevo candidato
     public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File imageFile) {
         try {
-            if (idNumber.getText().length() == 9) {
-                if (Validation.verifyCandidateExist(idNumber.getText())) {
-                    JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe.");
-                } else {
-                    if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
-                            && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
-
-                        candidateDAO.createCandidate(new candidate(Integer.parseInt(idNumber.getText()), name.getText(),
-                                Integer.parseInt(age.getText()), politicParty.getText()), imageFile);
-
-                        clearFields(name, idNumber, age, politicParty);
-                        refreshTable(table, scrollPane);
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
-                    }
-                }
-            } else {
+            if (idNumber.getText().length() != 9) {
                 JOptionPane.showMessageDialog(null, "La longitud de la cédula no es válida, esta debe tener 9 dígitos.");
+                return;
             }
+
+            if (Validation.verifyCandidateExist(idNumber.getText())) {
+                JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe.");
+            } else {
+                candidateDAO.createCandidate(new candidate(
+                        Integer.parseInt(idNumber.getText()),
+                        name.getText(),
+                        Integer.parseInt(age.getText()),
+                        politicParty.getText()), imageFile);
+
+                clearFields(name, idNumber, age, politicParty);
+                refreshTable(table, scrollPane);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar los números. Asegúrate de ingresar números válidos en los campos correspondientes.");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
         }

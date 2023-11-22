@@ -15,8 +15,8 @@ public class candidateDAO {
     public candidateDAO() {
 
     }
+// Método para crear un nuevo registro de candidato en la base de datos con imagen
 
-    // Método para crear un nuevo registro de candidato en la base de datos
     public void createCandidate(candidate candidate, File imageFile) {
         DBConnectionJava db = new DBConnectionJava();
         String sql = "INSERT INTO candidates (id_number, name, age, politic_party, image) VALUES (?, ?, ?, ?, ?)";
@@ -63,7 +63,6 @@ public class candidateDAO {
         return candidates;
     }
 
-    // Método para actualizar un registro existente de candidato en la base de datos
     public void updateCandidate(candidate candidate, File newImageFile) {
         DBConnectionJava db = new DBConnectionJava();
         String sql = "UPDATE candidates SET id_number=?, name=?, age=?, politic_party=?, image=? WHERE id=?";
