@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -24,6 +25,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import model.ImageRenderer;
 import model.candidate;
 import model.candidateDAO;
 
@@ -34,6 +38,7 @@ public class CtrlCandidate {
     private JTable table;
     private JScrollPane scrollPane;
     private JLabel lblImage;
+    private File selectedImageFile;
 
     public CtrlCandidate() {
         table = new JTable();
@@ -43,6 +48,29 @@ public class CtrlCandidate {
 
     public void initUI(JLabel lblImage) {
         this.lblImage = lblImage;
+    }
+
+    public void loadCandidatesData(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        List<candidate> candidates = candidateDAO.readCandidates();
+
+        // Agregar un renderizador de imagen para la columna de imagen (suponiendo que la columna de la imagen es la 5ª columna)
+        table.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());
+
+        for (candidate candidate : candidates) {
+            int id = candidate.getId();
+            String name = candidate.getName();
+            int idNumber = candidate.getIdNumber();
+            int age = candidate.getAge();
+            String politicParty = candidate.getPoliticParty();
+            byte[] imageBytes = candidate.getImageBytes();
+
+            ImageIcon imageIcon = new ImageIcon(imageBytes); // Convertir los bytes en un ImageIcon
+            Object[] row = {id, name, idNumber, age, politicParty, imageIcon};
+            model.addRow(row);
+        }
     }
 
     public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File imageFile) {
@@ -55,17 +83,24 @@ public class CtrlCandidate {
             if (Validation.verifyCandidateExist(idNumber.getText())) {
                 JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe.");
             } else {
-                candidateDAO.createCandidate(new candidate(
+                byte[] imageBytes = Files.readAllBytes(imageFile.toPath()); // Lee la imagen como array de bytes
+
+                candidate newCandidate = new candidate(
                         Integer.parseInt(idNumber.getText()),
                         name.getText(),
                         Integer.parseInt(age.getText()),
-                        politicParty.getText()), imageFile);
+                        politicParty.getText(),
+                        imageBytes); // Asigna el array de bytes a la instancia del candidato
+
+                candidateDAO.createCandidate(newCandidate, imageBytes); // Llama al método con ambos argumentos
 
                 clearFields(name, idNumber, age, politicParty);
-                refreshTable(table, scrollPane);
+                refreshTable(table);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar los números. Asegúrate de ingresar números válidos en los campos correspondientes.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo leer la imagen: " + e.getMessage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
         }
@@ -84,7 +119,7 @@ public class CtrlCandidate {
         int returnVal = fileChooser.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File selectedImageFile = fileChooser.getSelectedFile();
+            selectedImageFile = fileChooser.getSelectedFile();
 
             try {
                 lblImage.setIcon(new ImageIcon(ImageIO.read(selectedImageFile)));
@@ -103,10 +138,12 @@ public class CtrlCandidate {
                 } else {
                     if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
                             && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
-                        candidateDAO.updateCandidate(new candidate(id, Integer.parseInt(idNumber.getText()), name.getText(),
-                                Integer.parseInt(age.getText()), politicParty.getText()), newImageFile);
+                        byte[] imageBytes = Files.readAllBytes(newImageFile.toPath());
+                        candidate candidateToUpdate = new candidate(this.id, Integer.parseInt(idNumber.getText()), name.getText(),
+                                Integer.parseInt(age.getText()), politicParty.getText(), imageBytes);
+                        candidateDAO.updateCandidate(candidateToUpdate, newImageFile);
                         clearFields(name, idNumber, age, politicParty);
-                        refreshTable(table, scrollPane);
+                        refreshTable(table);
                     } else {
                         JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                     }
@@ -122,7 +159,7 @@ public class CtrlCandidate {
     // Método para eliminar un candidato
     public void deleteCandidate() {
         candidateDAO.deleteCandidate(id);
-        refreshTable(table, scrollPane);
+        refreshTable(table);
     }
 
     // Método para limpiar los campos del formulario
@@ -134,19 +171,10 @@ public class CtrlCandidate {
     }
 
     // Método para actualizar la tabla de candidatos
-    public void refreshTable(JTable table, JScrollPane scrollPane) {
+    public void refreshTable(JTable table) {
         List<candidate> candidates = candidateDAO.readCandidates();
-        displayCandidates(candidates, scrollPane);
-    }
-
-    // Método para mostrar los candidatos en la interfaz
-    private void displayCandidates(List<candidate> candidates, JScrollPane scrollPane) {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("ID");
-        model.addColumn("Nombre");
-        model.addColumn("Cedula");
-        model.addColumn("Edad");
-        model.addColumn("Partido Politico");
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
 
         for (candidate candidate : candidates) {
             model.addRow(new Object[]{
@@ -157,9 +185,10 @@ public class CtrlCandidate {
                 candidate.getPoliticParty()
             });
         }
+    }
 
-        table.setModel(model);
-        scrollPane.setViewportView(table);
+    public File getSelectedImageFile() {
+        return selectedImageFile;
     }
 
 }

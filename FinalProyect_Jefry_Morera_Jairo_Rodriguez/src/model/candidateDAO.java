@@ -1,5 +1,6 @@
 package model;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,33 +18,33 @@ public class candidateDAO {
     }
 // Método para crear un nuevo registro de candidato en la base de datos con imagen
 
-    public void createCandidate(candidate candidate, File imageFile) {
+    public void createCandidate(candidate candidate, byte[] imageBytes) {
         DBConnectionJava db = new DBConnectionJava();
         String sql = "INSERT INTO candidates (id_number, name, age, politic_party, image) VALUES (?, ?, ?, ?, ?)";
+
         try {
-            FileInputStream fis = new FileInputStream(imageFile);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
 
             try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
                 ps.setInt(1, candidate.getIdNumber());
                 ps.setString(2, candidate.getName());
                 ps.setInt(3, candidate.getAge());
                 ps.setString(4, candidate.getPoliticParty());
-                ps.setBinaryStream(5, fis, (int) imageFile.length());
+                ps.setBinaryStream(5, inputStream, imageBytes.length);
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Candidato insertado correctamente");
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "No se pudo insertar el candidato, error: " + e.getMessage());
         } finally {
             db.disconnect();
         }
     }
 
-    // Método para recuperar una lista de todos los candidatos de la base de datos
     public List<candidate> readCandidates() {
         DBConnectionJava db = new DBConnectionJava();
         List<candidate> candidates = new ArrayList<>();
-        String sql = "SELECT id, id_number, name, age, politic_party FROM candidates";
+        String sql = "SELECT id, id_number, name, age, politic_party, image FROM candidates";
 
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql); ResultSet resultSet = ps.executeQuery()) {
 
@@ -53,7 +54,9 @@ public class candidateDAO {
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
                 String politicParty = resultSet.getString("politic_party");
-                candidates.add(new candidate(id, idNumber, name, age, politicParty));
+                byte[] imageBytes = resultSet.getBytes("image");
+
+                candidates.add(new candidate(id, idNumber, name, age, politicParty, imageBytes));
             }
         } catch (SQLException e) {
             System.err.println("Error: " + e.getMessage());
@@ -64,22 +67,30 @@ public class candidateDAO {
     }
 
     public void updateCandidate(candidate candidate, File newImageFile) {
+        if (candidate == null || newImageFile == null) {
+            JOptionPane.showMessageDialog(null, "Los datos del candidato o la imagen son nulos.");
+            return;
+        }
+
         DBConnectionJava db = new DBConnectionJava();
         String sql = "UPDATE candidates SET id_number=?, name=?, age=?, politic_party=?, image=? WHERE id=?";
 
         try {
             try (FileInputStream fis = new FileInputStream(newImageFile); PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+
                 ps.setInt(1, candidate.getIdNumber());
                 ps.setString(2, candidate.getName());
                 ps.setInt(3, candidate.getAge());
                 ps.setString(4, candidate.getPoliticParty());
                 ps.setBinaryStream(5, fis, (int) newImageFile.length());
                 ps.setInt(6, candidate.getId());
+
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Modificación Exitosa");
             }
         } catch (SQLException | IOException e) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar el candidato, error: " + e.getMessage());
+            // Considera también registrar el error en un archivo de registro para un seguimiento detallado.
         } finally {
             db.disconnect();
         }

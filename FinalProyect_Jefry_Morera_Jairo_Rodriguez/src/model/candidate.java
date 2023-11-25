@@ -11,27 +11,31 @@ public class candidate {
     private String name;
     private int age;
     private String politicParty;
+    private byte[] imageBytes;
 
-    public candidate(int id, int idNumber, String name, int age, String politicParty) {
+    public candidate(int id, int idNumber, String name, int age, String politicParty, byte[] imageBytes) {
         this.id = id;
         this.idNumber = idNumber;
         this.name = name;
         this.age = age;
         this.politicParty = politicParty;
+        this.imageBytes = imageBytes;
     }
 
-    public candidate(int idNumber, String name, int age, String politicParty) {
+    public candidate(int idNumber, String name, int age, String politicParty, byte[] imageBytes) {
         this.idNumber = idNumber;
         this.name = name;
         this.age = age;
         this.politicParty = politicParty;
+        this.imageBytes = imageBytes;
     }
 
-    
-
-    // Getters y Setters
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdNumber() {
@@ -65,6 +69,13 @@ public class candidate {
     public void setPoliticParty(String politicParty) {
         this.politicParty = politicParty;
     }
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+    }
+
 }
-
-

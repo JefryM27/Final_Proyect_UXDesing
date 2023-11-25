@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JLabel;
+import model.ImageRenderer;
 
 public class candidateAdmUI extends javax.swing.JFrame {
 
@@ -17,7 +18,11 @@ public class candidateAdmUI extends javax.swing.JFrame {
 
     public candidateAdmUI() {
         initComponents();
-        ctc.initUI(lblImage);
+        ctc.initUI(lblImage); // Primero configura la interfaz
+        ctc.loadCandidatesData(tblCandidate); // Luego carga los datos en la tabla
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -187,7 +192,8 @@ public class candidateAdmUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPoliticCandidateActionPerformed
 
     private void btnAddCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCandidateActionPerformed
-        ctc.addCandidate(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate, selectedImageFile);
+        this.ctc.addCandidate(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate, selectedImageFile);
+        this.ctc.loadCandidatesData(tblCandidate);
     }//GEN-LAST:event_btnAddCandidateActionPerformed
 
     private void btnEditCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCandidateActionPerformed
@@ -199,7 +205,8 @@ public class candidateAdmUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteCandidateActionPerformed
 
     private void btnExaminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExaminarActionPerformed
-        ctc.examinarImagen();
+        this.ctc.examinarImagen();
+        selectedImageFile = ctc.getSelectedImageFile();
     }//GEN-LAST:event_btnExaminarActionPerformed
 
 
