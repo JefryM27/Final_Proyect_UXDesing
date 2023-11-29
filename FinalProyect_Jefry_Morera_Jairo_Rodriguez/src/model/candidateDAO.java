@@ -59,7 +59,30 @@ public class candidateDAO {
                 candidates.add(new candidate(id, idNumber, name, age, politicParty, imageBytes));
             }
         } catch (SQLException e) {
-            System.err.println("Error: " + e.getMessage());
+            // Manejo de excepciones
+        } finally {
+            db.disconnect();
+        }
+        return candidates;
+    }
+    
+    public List<candidate> readCandidatesVoter() {
+        DBConnectionJava db = new DBConnectionJava();
+        List<candidate> candidates = new ArrayList<>();
+        String sql = "SELECT name, politic_party, image FROM candidates";
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql); ResultSet resultSet = ps.executeQuery()) {
+
+            while (resultSet.next()) {
+                
+                String name = resultSet.getString("name");
+                String politicParty = resultSet.getString("politic_party");
+                byte[] imageBytes = resultSet.getBytes("image");
+
+                candidates.add(new candidate( name, politicParty, imageBytes));
+            }
+        } catch (SQLException e) {
+            // Manejo de excepciones
         } finally {
             db.disconnect();
         }

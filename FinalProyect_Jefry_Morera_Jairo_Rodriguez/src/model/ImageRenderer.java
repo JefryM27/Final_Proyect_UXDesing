@@ -18,35 +18,13 @@ import javax.imageio.ImageIO;
 public class ImageRenderer extends DefaultTableCellRenderer {
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+            boolean hasFocus, int row, int column) {
+        JLabel label = new JLabel();
         if (value instanceof ImageIcon) {
-            ImageIcon imageIcon = (ImageIcon) value;
-
-            // Obtener la imagen del ImageIcon
-            Image image = imageIcon.getImage();
-
-            // Obtener las dimensiones originales de la imagen
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-
-            // Establecer el tamaño deseado (por ejemplo, 100x100)
-            int newWidth = 100;
-            int newHeight = 100;
-
-            // Redimensionar la imagen al nuevo tamaño manteniendo la proporción
-            Image newImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-
-            // Establecer la imagen redimensionada en el JLabel
-            ImageIcon resizedImageIcon = new ImageIcon(newImage);
-            label.setIcon(resizedImageIcon);
-            label.setText(""); // Vaciar el texto para mostrar solo la imagen
-        } else {
-            label.setText("No image");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setIcon((ImageIcon) value); // Establece el ícono de la imagen en la celda
         }
-
         return label;
-
     }
 }

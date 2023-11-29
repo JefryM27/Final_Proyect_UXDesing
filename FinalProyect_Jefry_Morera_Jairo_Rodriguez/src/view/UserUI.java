@@ -2,14 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package V;
+package view;
 
+import controller.*;
 
 public class UserUI extends javax.swing.JFrame {
 
-  
+    CtrlUser ctu = new CtrlUser();
+
     public UserUI() {
         initComponents();
+        this.ctu.loadUserData(tblUsers);
+    }
+
+    private void clear() {
+        this.txtUserName.setText("");
+        this.txtUserPassword.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -20,13 +28,13 @@ public class UserUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        scroll = new javax.swing.JScrollPane();
+        tblUsers = new javax.swing.JTable();
+        txtUserPassword = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
+        btnDeleteUser = new javax.swing.JButton();
+        btnAddUser = new javax.swing.JButton();
+        btnEditUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -34,7 +42,7 @@ public class UserUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Administrator de Usuarios");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 310, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 310, -1));
 
         jLabel2.setText("Nombre:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
@@ -42,7 +50,7 @@ public class UserUI extends javax.swing.JFrame {
         jLabel3.setText("Contraseña:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -53,20 +61,40 @@ public class UserUI extends javax.swing.JFrame {
                 "ID:", "Nombre:", "Contraseña:"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
+        scroll.setViewportView(tblUsers);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 810, 270));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 150, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 150, -1));
+        jPanel1.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 810, 270));
+        jPanel1.add(txtUserPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 150, -1));
+        jPanel1.add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 150, -1));
 
-        jButton1.setText("Eliminar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 170, -1, -1));
+        btnDeleteUser.setText("Eliminar");
+        btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUserActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDeleteUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 170, -1, -1));
 
-        jButton2.setText("Agregar");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, -1, -1));
+        btnAddUser.setText("Agregar");
+        btnAddUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAddUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, -1, -1));
 
-        jButton3.setText("Editar");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
+        btnEditUser.setText("Editar");
+        btnEditUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditUserActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEditUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,18 +112,41 @@ public class UserUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
+        this.ctu.addUser(txtUserName, txtUserPassword);
+        this.clear();
+        this.ctu.loadUserData(tblUsers);
+
+    }//GEN-LAST:event_btnAddUserActionPerformed
+
+    private void btnEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUserActionPerformed
+        this.ctu.addUser(txtUserName, txtUserPassword);
+        this.clear();
+        this.ctu.loadUserData(tblUsers);
+    }//GEN-LAST:event_btnEditUserActionPerformed
+
+    private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
+        this.ctu.deleteUser();
+        this.clear();
+        this.ctu.loadUserData(tblUsers);
+    }//GEN-LAST:event_btnDeleteUserActionPerformed
+
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        this.ctu.selectedRow(tblUsers, txtUserName, txtUserPassword);
+    }//GEN-LAST:event_tblUsersMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAddUser;
+    private javax.swing.JButton btnDeleteUser;
+    private javax.swing.JButton btnEditUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane scroll;
+    private javax.swing.JTable tblUsers;
+    private javax.swing.JTextField txtUserName;
+    private javax.swing.JTextField txtUserPassword;
     // End of variables declaration//GEN-END:variables
 }

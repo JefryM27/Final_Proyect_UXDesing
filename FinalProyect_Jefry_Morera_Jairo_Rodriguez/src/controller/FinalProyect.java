@@ -2,17 +2,19 @@ package controller;
 
 import model.DBConnectionJava;
 import view.*;
+
 public class FinalProyect {
 
     public static void main(String[] args) {
+
+        voterUI myUI = new voterUI(); // Crear una instancia de voterUI
         
-        candidateAdmUI ca = new candidateAdmUI();
-        ca.setVisible(true);
+        myUI.setVisible(true);
         
+
         /*DBConnectionJava db = new DBConnectionJava();
         db.getConnection();
         db.disconnect();*/
-
     }
 
 }

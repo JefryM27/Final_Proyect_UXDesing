@@ -67,10 +67,10 @@ public class candidateAdmUI extends javax.swing.JFrame {
         txtNameCandidate.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
         jLabel5.setText("Número de Cédula:");
-        txtNameCandidate.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+        txtNameCandidate.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         jLabel6.setText("Partido Politico:");
-        txtNameCandidate.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, -1, -1));
+        txtNameCandidate.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, -1, -1));
 
         tblCandidate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,14 +92,14 @@ public class candidateAdmUI extends javax.swing.JFrame {
                 txtIdNumberCandidateActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(txtIdNumberCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 160, -1));
+        txtNameCandidate.add(txtIdNumberCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 160, -1));
 
         txtAgeCandidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAgeCandidateActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(txtAgeCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 160, -1));
+        txtNameCandidate.add(txtAgeCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 160, -1));
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,14 +113,14 @@ public class candidateAdmUI extends javax.swing.JFrame {
                 txtCandidateNameActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(txtCandidateName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 160, -1));
+        txtNameCandidate.add(txtCandidateName, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 170, 160, -1));
 
         txtPoliticCandidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPoliticCandidateActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(txtPoliticCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 160, -1));
+        txtNameCandidate.add(txtPoliticCandidate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, 160, -1));
 
         btnDeleteCandidate.setText("Eliminar");
         btnDeleteCandidate.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +155,7 @@ public class candidateAdmUI extends javax.swing.JFrame {
                 btnExaminarActionPerformed(evt);
             }
         });
-        txtNameCandidate.add(btnExaminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 150, -1, -1));
+        txtNameCandidate.add(btnExaminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
