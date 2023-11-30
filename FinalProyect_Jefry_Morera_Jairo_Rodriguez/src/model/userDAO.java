@@ -55,12 +55,13 @@ public class userDAO {
     public void updateUser(user user) {
         DBConnectionJava db = new DBConnectionJava();
 
-        String consultaSQL = "UPDATE user SET name, password WHERE id=?";
+        String consultaSQL = "UPDATE users SET name=?, password=? WHERE id=?";
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(consultaSQL);
         ps.setString(1, user.getName());
         ps.setString(2,user.getPassword());
+        ps.setInt(3, user.getId());
             ps.execute();
             JOptionPane.showMessageDialog(null, "Modificación Exitosa");
         } catch (SQLException e) {

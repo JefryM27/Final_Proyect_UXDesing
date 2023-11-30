@@ -13,12 +13,11 @@ public class UserUI extends javax.swing.JFrame {
     public UserUI() {
         initComponents();
         this.ctu.loadUserData(tblUsers);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
-    private void clear() {
-        this.txtUserName.setText("");
-        this.txtUserPassword.setText("");
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -35,6 +34,8 @@ public class UserUI extends javax.swing.JFrame {
         btnDeleteUser = new javax.swing.JButton();
         btnAddUser = new javax.swing.JButton();
         btnEditUser = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cbxRoles = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +97,11 @@ public class UserUI extends javax.swing.JFrame {
         });
         jPanel1.add(btnEditUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, -1, -1));
 
+        jLabel4.setText("Rol:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, -1));
+
+        jPanel1.add(cbxRoles, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 150, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,20 +120,20 @@ public class UserUI extends javax.swing.JFrame {
 
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
         this.ctu.addUser(txtUserName, txtUserPassword);
-        this.clear();
+        this.ctu.clearFields(txtUserName, txtUserPassword);
         this.ctu.loadUserData(tblUsers);
 
     }//GEN-LAST:event_btnAddUserActionPerformed
 
     private void btnEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUserActionPerformed
-        this.ctu.addUser(txtUserName, txtUserPassword);
-        this.clear();
+        this.ctu.updateUser(txtUserName, txtUserPassword);
+        this.ctu.clearFields(txtUserName, txtUserPassword);
         this.ctu.loadUserData(tblUsers);
     }//GEN-LAST:event_btnEditUserActionPerformed
 
     private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
         this.ctu.deleteUser();
-        this.clear();
+        this.ctu.clearFields(txtUserName, txtUserPassword);
         this.ctu.loadUserData(tblUsers);
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
@@ -140,9 +146,11 @@ public class UserUI extends javax.swing.JFrame {
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnDeleteUser;
     private javax.swing.JButton btnEditUser;
+    private javax.swing.JComboBox<String> cbxRoles;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tblUsers;

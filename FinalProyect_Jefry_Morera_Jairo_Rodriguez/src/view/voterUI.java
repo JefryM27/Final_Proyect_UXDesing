@@ -7,10 +7,7 @@ package view;
 import controller.CtrlCandidate;
 
 
-/**
- *
- * @author jairo
- */
+
 public class voterUI extends javax.swing.JFrame {
     CtrlCandidate ctc = new CtrlCandidate();
 

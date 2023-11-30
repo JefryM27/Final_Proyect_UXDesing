@@ -12,10 +12,6 @@ import model.user;
 import model.voter;
 import model.voterDAO;
 
-/**
- *
- * @author jefry
- */
 public class CtrlVoter {
 
     voterDAO voter = new voterDAO();
@@ -51,7 +47,7 @@ public class CtrlVoter {
                             || !Validation.validateLetters(name.getText())) {
                         JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                     } else {
-                        this.voter.updateVoter(new voter(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
+                        this.voter.createVoter(new voter(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
                         clearFields(name, idNumber, age, email, phoneNumber);
                     }
                 } catch (Exception e) {
@@ -67,28 +63,22 @@ public class CtrlVoter {
     public void updateVoter(JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
         //Get the id number and validate if is equals to nine
         if (idNumber.getText().length() == 9) {
-            //Get the legal id and verify if the voter is already 
-            if (Validation.verifyCandidateExist(idNumber.getText())) {
-                JOptionPane.showMessageDialog(null, "El votante que desea registrar ya existe en la base de datos.");
-            } else {
-                try {
-                    if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText())
-                            || !Validation.verifyCandidateExist(name.getText()) || !Validation.validateNumbers(phoneNumber.getText())) {
-                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
-                    } else {
-                        this.voter.updateVoter(new voter(name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
-                        clearFields(name, idNumber, age, email, phoneNumber);
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "No se pudo guardar el votante, error: " + e.toString());
+            try {
+                if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText()) || !Validation.validateEmail(email.getText()) || !Validation.validateNumbers(phoneNumber.getText())) {
+                    JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
+                } else {
+                    this.voter.updateVoter(new voter(this.id, name.getText(), Integer.parseInt(idNumber.getText()), Integer.parseInt(age.getText()), email.getText(), Integer.parseInt(phoneNumber.getText())));
+
                 }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "No se pudo guardar el votante, error: " + e.toString());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "La longitud de la cédula no es valido, esta debe tener 9 digitos.");
+            JOptionPane.showMessageDialog(null, "La longitud de la cédula no es válida, debe tener 9 dígitos.");
         }
     }
-//Method to select and access a table row 
 
+//Method to select and access a table row 
     public void selectedRow(JTable table, JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
         try {
             int row = table.getSelectedRow();

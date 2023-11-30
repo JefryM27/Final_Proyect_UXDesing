@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.Connection;
@@ -10,9 +9,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class voterDAO {
-    
-    public voterDAO(){
-        
+
+    public voterDAO() {
+
     }
 
     // Method to create a new voter record in the database
@@ -61,11 +60,12 @@ public class voterDAO {
         return voters;
     }
 
-// Method to update an existing voter record in the database
+
+
     public void updateVoter(voter voter) {
         DBConnectionJava db = new DBConnectionJava();
 
-        String consultaSQL = "UPDATE voters SET id_number=?, name=?, email=?, telephone =? WHERE id=?";
+        String consultaSQL = "UPDATE voters SET id_number=?, name=?, age=?, email=?, phone_number=? WHERE id=?";
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(consultaSQL);
@@ -75,7 +75,8 @@ public class voterDAO {
             ps.setString(4, voter.getEmail());
             ps.setInt(5, voter.getPhoneNumber());
             ps.setInt(6, voter.getId());
-            ps.execute();
+            ps.execute(); // Usar executeUpdate para actualizaciones
+
             JOptionPane.showMessageDialog(null, "Modificación Exitosa");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar el votante, error: " + e.getMessage());

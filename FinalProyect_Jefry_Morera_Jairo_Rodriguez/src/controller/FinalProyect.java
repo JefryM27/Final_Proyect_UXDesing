@@ -7,7 +7,7 @@ public class FinalProyect {
 
     public static void main(String[] args) {
 
-        voterUI myUI = new voterUI(); // Crear una instancia de voterUI
+        loginGeneral myUI = new loginGeneral(); // Crear una instancia de voterUI
         
         myUI.setVisible(true);
         

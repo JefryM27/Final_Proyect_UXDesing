@@ -2,16 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package V;
-
+package view;
 
 public class loginGeneral extends javax.swing.JFrame {
 
-
     public loginGeneral() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -39,6 +38,11 @@ public class loginGeneral extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
 
         btnVoter.setText("Votante");
+        btnVoter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoterActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnVoter, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 130, -1));
 
         btnAdministrator.setText("Administración");
@@ -66,10 +70,17 @@ public class loginGeneral extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdministratorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministratorActionPerformed
-        // TODO add your handling code here:
+        LoginAdmin adm = new LoginAdmin();
+        adm.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAdministratorActionPerformed
 
-   
+    private void btnVoterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoterActionPerformed
+        LoginAdmin adm = new LoginAdmin();
+        adm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVoterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdministrator;

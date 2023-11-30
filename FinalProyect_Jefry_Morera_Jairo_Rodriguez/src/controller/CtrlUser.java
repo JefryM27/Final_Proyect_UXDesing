@@ -53,7 +53,7 @@ public class CtrlUser {
             if (!Validation.validateLetters(name.getText())) {
                 JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
             } else {
-                this.user.updateUser(new user(name.getText(), password.getText()));
+                this.user.updateUser(new user(this.id,name.getText(), password.getText()));
                 clearFields(name, password);
             }
         } catch (Exception e) {

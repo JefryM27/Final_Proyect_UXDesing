@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package V;
+package view;
+import model.*;
 
 import javax.swing.JOptionPane;
 
@@ -122,22 +123,22 @@ public class LoginAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
      // Get the entered username and password
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        /*String username = txtUserName.getText();
+        String username = txtUserName.getText();
         String password = new String(txtPassword.getPassword());
 
-        LoginDAO login = new LoginDAO();
+        loginDAO login = new loginDAO();
         String roleName = login.loginUser(username, password);
 
         if (!roleName.isEmpty()) {
-            Register register = new Register(roleName);
-            register.setVisible(true);
+            adminUI adm = new adminUI();
+            adm.setVisible(true);
             this.clear();
             this.dispose();
             // Código para ocultar la ventana de inicio de sesión de Login si es necesario
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales incorrectos. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             this.clear();
-        }*/
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed

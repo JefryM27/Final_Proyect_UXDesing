@@ -15,13 +15,7 @@ public class voterAdmUI extends javax.swing.JFrame {
         this.ctv.loadVoterData(tblAdm);
     }
 
-    private void clear() {
-        this.txtName.setText("");
-        this.txtEmail.setText("");
-        this.txtIdNumber.setText("");
-        this.txtTelephone.setText("");
-        this.txtAge.setText("");
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -71,13 +65,13 @@ public class voterAdmUI extends javax.swing.JFrame {
 
         tblAdm.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID:", "Cédula:", "Nombre:", "Correo Electrónico:", "Número Telefónico:"
+                "ID:", "Cedula", "Nombre", "Edad", "Correo Electronico", "Telefono"
             }
         ));
         tblAdm.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -115,7 +109,7 @@ public class voterAdmUI extends javax.swing.JFrame {
 
         jLabel6.setText("Edad:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 110, -1, -1));
-        jPanel1.add(txtAge, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 100, -1, -1));
+        jPanel1.add(txtAge, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 100, 70, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,20 +127,20 @@ public class voterAdmUI extends javax.swing.JFrame {
 
     private void btnAddAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAdmActionPerformed
         this.ctv.addVoter(txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
-        this.clear();
+        this.ctv.clearFields(txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
         this.ctv.loadVoterData(tblAdm);
 
     }//GEN-LAST:event_btnAddAdmActionPerformed
 
     private void btnEditAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAdmActionPerformed
         this.ctv.updateVoter(txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
-        this.clear();
+        this.ctv.clearFields(txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
         this.ctv.loadVoterData(tblAdm);
     }//GEN-LAST:event_btnEditAdmActionPerformed
 
     private void btnDeleteAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAdmActionPerformed
         this.ctv.deleteVoter();
-        this.clear();
+        this.ctv.clearFields(txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
         this.ctv.loadVoterData(tblAdm);
     }//GEN-LAST:event_btnDeleteAdmActionPerformed
 
