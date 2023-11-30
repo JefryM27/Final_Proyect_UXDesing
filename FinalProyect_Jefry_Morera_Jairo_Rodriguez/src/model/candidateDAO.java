@@ -65,21 +65,21 @@ public class candidateDAO {
         }
         return candidates;
     }
-    
+
     public List<candidate> readCandidatesVoter() {
         DBConnectionJava db = new DBConnectionJava();
         List<candidate> candidates = new ArrayList<>();
-        String sql = "SELECT name, politic_party, image FROM candidates";
+        String sql = "SELECT id, name, politic_party, image FROM candidates"; // Agrega la columna 'id' a la consulta SQL
 
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql); ResultSet resultSet = ps.executeQuery()) {
 
             while (resultSet.next()) {
-                
+                int id = resultSet.getInt("id"); // Obtiene el ID del candidato
                 String name = resultSet.getString("name");
                 String politicParty = resultSet.getString("politic_party");
                 byte[] imageBytes = resultSet.getBytes("image");
 
-                candidates.add(new candidate( name, politicParty, imageBytes));
+                candidates.add(new candidate(id, name, politicParty, imageBytes)); // Pasa el ID al constructor
             }
         } catch (SQLException e) {
             // Manejo de excepciones

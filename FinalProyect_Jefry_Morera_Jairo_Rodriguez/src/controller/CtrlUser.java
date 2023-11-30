@@ -1,19 +1,20 @@
 package controller;
 
-import controller.Validation;
+import controller.*;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import model.user;
-import model.userDAO;
+import model.*;
 
 public class CtrlUser {
 
     userDAO user = new userDAO();
+    rolDAO rolDAO = new rolDAO();
     int id;
 
     public void loadUserData(JTable table) {
@@ -25,21 +26,25 @@ public class CtrlUser {
         List<user> users = user.readUser();
 
         for (user user : users) {
+            String roleName = rolDAO.getRoleNameById(user.getRoleId());
             // Get the name of the entity and the corresponding role
 
-            Object[] row = {user.getId(), user.getName(), user.getPassword()};
+            Object[] row = {user.getId(), user.getName(), user.getPassword(), roleName};
             model.addRow(row);
         }
     }
 
     //Method to add new user
-    public void addUser(JTextField name, JTextField password) {
+    public void addUser(JTextField name, JTextField password, JComboBox<String> cbxRole) {
 
         try {
             if (!Validation.validateLetters(name.getText())) {
                 JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
             } else {
-                this.user.createUser(new user(name.getText(), password.getText()));
+                String roleName = (String) cbxRole.getSelectedItem();
+                ctrlRol ctrlRol = new ctrlRol();
+                int roleId = ctrlRol.getRoleIdByName2(roleName);
+                this.user.createUser(new user(name.getText(), password.getText(), roleId));
                 clearFields(name, password);
             }
         } catch (Exception e) {
@@ -48,27 +53,34 @@ public class CtrlUser {
     }
 
     //Method to update the users from the table 
-    public void updateUser(JTextField name, JTextField password) {
+    public void updateUser(JTextField name, JTextField password, JComboBox<String> cbxRole) {
         try {
             if (!Validation.validateLetters(name.getText())) {
                 JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
             } else {
-                this.user.updateUser(new user(this.id,name.getText(), password.getText()));
+                ctrlRol ctrlRol = new ctrlRol();
+                String roleName = (String) cbxRole.getSelectedItem();
+
+                // Convert entity and role names into their respective IDs 
+                int roleId = ctrlRol.getRoleIdByName(roleName);
+                this.user.updateUser(new user(this.id, name.getText(), password.getText(), roleId));
                 clearFields(name, password);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar el usuario, error: " + e.toString());
         }
     }
-//Method to select and access a table row 
-
-    public void selectedRow(JTable table, JTextField name, JTextField password) {
+    
+   //Method to select and access a table row 
+    public void selectedRow(JTable table, JTextField name, JTextField password, JComboBox<String> cbxRole) {
         try {
             int row = table.getSelectedRow();
             if (row >= 0) {
                 this.id = Integer.parseInt(table.getValueAt(row, 0).toString());
                 name.setText(table.getValueAt(row, 1).toString());
                 password.setText(table.getValueAt(row, 2).toString());
+                String roleName = table.getValueAt(row, 3).toString();
+                cbxRole.setSelectedItem(roleName);
             } else {
                 JOptionPane.showMessageDialog(null, "Fila no seleccionada");
             }

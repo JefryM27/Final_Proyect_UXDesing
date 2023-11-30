@@ -1,35 +1,15 @@
 package controller;
 
 import controller.Validation;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import model.ImageRenderer;
 import model.ImageResizer;
 import model.candidate;
@@ -104,9 +84,11 @@ public class CtrlCandidate {
         List<candidate> candidates = candidateDAO.readCandidatesVoter();
 
         // Agregar un renderizador de imagen para la columna de imagen (suponiendo que la columna de la imagen es la 5ª columna)
-        table.getColumnModel().getColumn(2).setCellRenderer(new ImageRenderer());
+        table.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
 
         for (candidate candidate : candidates) {
+            int candidateId = candidate.getId(); // Obtener el ID del candidato
+
             String name = candidate.getName();
             String politicParty = candidate.getPoliticParty();
             byte[] imageBytes = candidate.getImageBytes();
@@ -124,16 +106,16 @@ public class CtrlCandidate {
             // Crear un ImageIcon con los bytes de la imagen redimensionada
             ImageIcon resizedImageIcon = new ImageIcon(resizedImageBytes);
 
-            Object[] row = {name, politicParty, resizedImageIcon};
+            Object[] row = {candidateId, name, politicParty, resizedImageIcon};
             model.addRow(row);
         }
 
         // Ajustes de la tabla
         table.setRowHeight(200);
-        for (int i = 0; i < 3; i++) {
-            table.getColumnModel().getColumn(i).setMaxWidth(180); // Por ejemplo, ajusta el ancho de las primeras 6 columnas
+        for (int i = 0; i < 4; i++) {
+            table.getColumnModel().getColumn(i).setMaxWidth(180); // Ajusta el ancho de las primeras 4 columnas
         }
-        table.getColumnModel().getColumn(2).setMaxWidth(140); // Ajusta el ancho de la columna de la imagen
+        table.getColumnModel().getColumn(3).setMaxWidth(140); // Ajusta el ancho de la columna de la imagen
     }
 
     public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File imageFile) {
@@ -200,24 +182,33 @@ public class CtrlCandidate {
         }
     }
 
-    // Método para actualizar un candidato
     public void updateCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File newImageFile) {
         try {
+            // Verificar si la longitud del número de identificación es correcta
             if (idNumber.getText().length() == 9) {
-                if (Validation.verifyCandidateExist(idNumber.getText())) {
-                    JOptionPane.showMessageDialog(null, "El candidato que desea registrar ya existe en la base de datos.");
+                // Validar los campos ingresados
+                if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
+                        && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
+                    // Leer el archivo de la nueva imagen como bytes
+                    byte[] imageBytes = Files.readAllBytes(newImageFile.toPath());
+
+                    // Crear un objeto candidate con la información actualizada
+                    candidate candidateToUpdate = new candidate(
+                            this.id,
+                            Integer.parseInt(idNumber.getText()),
+                            name.getText(),
+                            Integer.parseInt(age.getText()),
+                            politicParty.getText(),
+                            imageBytes);
+
+                    // Llamar al método en candidateDAO para actualizar el candidato
+                    candidateDAO.updateCandidate(candidateToUpdate, newImageFile);
+
+                    // Limpiar los campos y refrescar la tabla
+                    clearFields(name, idNumber, age, politicParty);
+                    refreshTable(table);
                 } else {
-                    if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
-                            && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
-                        byte[] imageBytes = Files.readAllBytes(newImageFile.toPath());
-                        candidate candidateToUpdate = new candidate(this.id, Integer.parseInt(idNumber.getText()), name.getText(),
-                                Integer.parseInt(age.getText()), politicParty.getText(), imageBytes);
-                        candidateDAO.updateCandidate(candidateToUpdate, newImageFile);
-                        clearFields(name, idNumber, age, politicParty);
-                        refreshTable(table);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
-                    }
+                    JOptionPane.showMessageDialog(null, "Posible error de formato, por favor digite el formato correspondiente a su espacio.");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "La longitud de la cédula no es válida, esta debe tener 9 dígitos.");
@@ -225,6 +216,26 @@ public class CtrlCandidate {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo modificar el candidato, error: " + e.toString());
         }
+    }
+
+    public void selectedRow(JTable table, JTextField txtName, JTextField txtIdNumber, JTextField txtAge, JTextField txtPoliticParty, JLabel lblImage) {
+        try {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                this.id = Integer.parseInt(table.getValueAt(row, 0).toString());
+                txtName.setText(table.getValueAt(row, 1).toString());
+                txtIdNumber.setText(table.getValueAt(row, 2).toString());
+                txtAge.setText(table.getValueAt(row, 3).toString());
+                txtPoliticParty.setText(table.getValueAt(row, 4).toString());
+                ImageIcon imageIcon = (ImageIcon) table.getValueAt(row, 5);
+                lblImage.setIcon(imageIcon);
+            } else {
+                JOptionPane.showMessageDialog(null, "Fila no seleccionada");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de selección, error: " + e.toString());
+        }
+
     }
 
     // Método para eliminar un candidato

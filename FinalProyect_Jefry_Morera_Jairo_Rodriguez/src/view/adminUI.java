@@ -4,25 +4,28 @@
  */
 package view;
 
-import controller.CtrlCandidate;
-import controller.CtrlVoter;
+import controller.*;
 import java.io.File;
 
 public class adminUI extends javax.swing.JFrame {
-
+    
     CtrlCandidate ctc = new CtrlCandidate();
     CtrlVoter ctv = new CtrlVoter();
+    CtrlUser ctu = new CtrlUser();
+    ctrlRol ctr = new ctrlRol();
     private File selectedImageFile;
-
+    
     public adminUI() {
         initComponents();
         ctc.initUI(lblImage); // Primero configura la interfaz
         ctc.loadCandidatesData(tblCandidate); // Luego carga los datos en la tabla
         this.ctv.loadVoterData(tblAdm);
+        this.ctu.loadUserData(tblUsers);
+        this.ctr.loadRolesToComboBox(cbxRoles);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -63,8 +66,23 @@ public class adminUI extends javax.swing.JFrame {
         btnDeleteAdm = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAdm = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        txtUserPassword = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        cbxRoles = new javax.swing.JComboBox<>();
+        btnAddUser = new javax.swing.JButton();
+        btnEditUser = new javax.swing.JButton();
+        btnDeleteUser = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblUsers = new javax.swing.JTable();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -116,9 +134,14 @@ public class adminUI extends javax.swing.JFrame {
                 "ID:", "Cédula:", "Nombre:", "Edad:", "Partido Político:", "Imágen:"
             }
         ));
+        tblCandidate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCandidateMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCandidate);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 1040, 340));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 1120, 340));
 
         txtAgeCandidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,16 +262,80 @@ public class adminUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Votantes", jPanel2);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
-        );
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel13.setText("Administrator de Usuarios");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 310, -1));
+
+        jLabel14.setText("Nombre:");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
+        jPanel3.add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 150, -1));
+
+        jLabel15.setText("Contraseña:");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
+        jPanel3.add(txtUserPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 150, -1));
+
+        jLabel16.setText("Rol:");
+        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 100, -1, -1));
+
+        jPanel3.add(cbxRoles, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 150, -1));
+
+        btnAddUser.setText("Agregar");
+        btnAddUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnAddUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 90, -1, -1));
+
+        btnEditUser.setText("Editar");
+        btnEditUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditUserActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnEditUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 150, -1, -1));
+
+        btnDeleteUser.setText("Eliminar");
+        btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUserActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnDeleteUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 220, -1, -1));
+
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Contraseña", "Rol"
+            }
+        ));
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblUsers);
+
+        jPanel3.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, 280, 1140, 370));
+
+        jTabbedPane1.addTab("Usuarios", jPanel3);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 1120, -1));
+
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 48, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -276,15 +363,21 @@ public class adminUI extends javax.swing.JFrame {
 
     private void btnAddCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCandidateActionPerformed
         this.ctc.addCandidate(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate, selectedImageFile);
+        this.ctc.clearFields(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate);
         this.ctc.loadCandidatesData(tblCandidate);
+        
     }//GEN-LAST:event_btnAddCandidateActionPerformed
 
     private void btnEditCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditCandidateActionPerformed
-        // TODO add your handling code here:
+        this.ctc.updateCandidate(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate, selectedImageFile);
+        this.ctc.clearFields(txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate);
+        this.ctc.loadCandidatesData(tblCandidate);
+        
     }//GEN-LAST:event_btnEditCandidateActionPerformed
 
     private void btnDeleteCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCandidateActionPerformed
-        // TODO add your handling code here:
+        this.ctc.deleteCandidate();
+        this.ctc.loadCandidatesData(tblCandidate);
     }//GEN-LAST:event_btnDeleteCandidateActionPerformed
 
     private void btnAddAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAdmActionPerformed
@@ -309,19 +402,60 @@ public class adminUI extends javax.swing.JFrame {
         this.ctv.selectedRow(tblAdm, txtName, txtIdNumber, txtAge, txtEmail, txtTelephone);
     }//GEN-LAST:event_tblAdmMouseClicked
 
+    private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
+        this.ctu.addUser(txtUserName, txtUserPassword, cbxRoles);
+        this.ctu.clearFields(txtUserName, txtUserPassword);
+        this.ctu.loadUserData(tblUsers);
+    }//GEN-LAST:event_btnAddUserActionPerformed
+
+    private void btnEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUserActionPerformed
+        this.ctu.updateUser(txtUserName, txtUserPassword, cbxRoles);
+        this.ctu.clearFields(txtUserName, txtUserPassword);
+        this.ctu.loadUserData(tblUsers);
+    }//GEN-LAST:event_btnEditUserActionPerformed
+
+    private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
+        this.ctu.deleteUser();
+        this.ctu.clearFields(txtUserName, txtUserPassword);
+        this.ctu.loadUserData(tblUsers);
+    }//GEN-LAST:event_btnDeleteUserActionPerformed
+
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        this.ctu.selectedRow(tblUsers, txtUserName, txtUserPassword, cbxRoles);
+    }//GEN-LAST:event_tblUsersMouseClicked
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        LoginAdmin lg = new LoginAdmin();
+        lg.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void tblCandidateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCandidateMouseClicked
+        this.ctc.selectedRow(tblCandidate, txtCandidateName, txtIdNumberCandidate, txtAgeCandidate, txtPoliticCandidate,lblImage);
+    }//GEN-LAST:event_tblCandidateMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAdm;
     private javax.swing.JButton btnAddCandidate;
+    private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnDeleteAdm;
     private javax.swing.JButton btnDeleteCandidate;
+    private javax.swing.JButton btnDeleteUser;
     private javax.swing.JButton btnEditAdm;
     private javax.swing.JButton btnEditCandidate;
+    private javax.swing.JButton btnEditUser;
     private javax.swing.JButton btnExaminar;
+    private javax.swing.JButton btnExit;
+    private javax.swing.JComboBox<String> cbxRoles;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -332,12 +466,15 @@ public class adminUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblImage;
     private javax.swing.JTable tblAdm;
     private javax.swing.JTable tblCandidate;
+    private javax.swing.JTable tblUsers;
     private javax.swing.JTextField txtAge;
     private javax.swing.JTextField txtAgeCandidate;
     private javax.swing.JTextField txtCandidateName;
@@ -347,5 +484,7 @@ public class adminUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPoliticCandidate;
     private javax.swing.JTextField txtTelephone;
+    private javax.swing.JTextField txtUserName;
+    private javax.swing.JTextField txtUserPassword;
     // End of variables declaration//GEN-END:variables
 }

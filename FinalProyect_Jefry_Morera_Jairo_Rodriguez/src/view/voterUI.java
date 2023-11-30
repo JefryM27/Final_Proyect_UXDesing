@@ -4,12 +4,17 @@
  */
 package view;
 
-import controller.CtrlCandidate;
-
-
+import controller.*;
+import model.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 public class voterUI extends javax.swing.JFrame {
+
     CtrlCandidate ctc = new CtrlCandidate();
+    voterDAO voterDAO = new voterDAO();
+    resultDAO resultDAO = new resultDAO();
+    private int selectedCandidateId = -1;
 
     public voterUI() {
         initComponents();
@@ -19,10 +24,14 @@ public class voterUI extends javax.swing.JFrame {
 
     }
 
-    
-    
+    public int getSelectedCandidateId() {
+        int selectedRow = tblCandidates.getSelectedRow();
+        if (selectedRow != -1) {
+            return Integer.parseInt(tblCandidates.getValueAt(selectedRow, 0).toString());
+        }
+        return -1; // Si no se ha seleccionado ninguna fila
+    }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -32,7 +41,11 @@ public class voterUI extends javax.swing.JFrame {
         tblCandidates = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnVote = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtIdNumber = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,17 +57,17 @@ public class voterUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Partido Politico", "Imagen"
+                "ID", "Nombre", "Partido Politico", "Imagen"
             }
         ));
         jScrollPane1.setViewportView(tblCandidates);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 520, 410));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 520, 450));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Por favor seleccione un candidato y luego presione el boton");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -62,10 +75,41 @@ public class voterUI extends javax.swing.JFrame {
         jLabel2.setText("Candidatos");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/voting-box.png"))); // NOI18N
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 160, 70, 70));
+        btnVote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/voting-box.png"))); // NOI18N
+        btnVote.setBorderPainted(false);
+        btnVote.setContentAreaFilled(false);
+        btnVote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVote, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 70, 70));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Cedula:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+
+        txtIdNumber.setBackground(new java.awt.Color(204, 255, 255));
+        txtIdNumber.setBorder(null);
+        jPanel1.add(txtIdNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 150, 20));
+
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 160, 10));
+
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
+        btnExit.setBorderPainted(false);
+        btnExit.setContentAreaFilled(false);
+        btnExit.setDefaultCapable(false);
+        btnExit.setFocusPainted(false);
+        btnExit.setFocusable(false);
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 60));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,19 +119,53 @@ public class voterUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnVoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoteActionPerformed
+        selectedCandidateId = getSelectedCandidateId();
+        if (selectedCandidateId != -1) { // Verifica si el ID del candidato es válido
+            String idNumber = txtIdNumber.getText(); // Obtén el ID del votante desde el JTextField
+            if (voterDAO.authenticateVoter(idNumber)) { // Autentica al votante
+                if (!voterDAO.hasVoted(idNumber)) { // Verifica si el votante no ha votado aún
+                    // Registra el voto en la base de datos
+                    result newResult = new result(voterDAO.getVoterId(idNumber), selectedCandidateId);
+                    resultDAO.createResult(newResult); // Método para registrar el voto en la tabla results
+                    voterDAO.markAsVoted(idNumber); // Marca al votante como que ya ha votado
+                    JOptionPane.showMessageDialog(null, "¡Su voto ha sido registrado correctamente!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "¡Usted ya ha votado!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El votante no está registrado o ingresó un ID incorrecto.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un candidato para votar.");
+        }
+
+
+    }//GEN-LAST:event_btnVoteActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        loginGeneral lg = new loginGeneral();
+        lg.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnVote;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tblCandidates;
+    private javax.swing.JTextField txtIdNumber;
     // End of variables declaration//GEN-END:variables
 }

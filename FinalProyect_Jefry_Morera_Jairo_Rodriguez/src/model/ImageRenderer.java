@@ -11,10 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author jairo
- */
+
 public class ImageRenderer extends DefaultTableCellRenderer {
 
     @Override

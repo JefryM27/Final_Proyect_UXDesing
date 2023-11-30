@@ -30,11 +30,14 @@ public class candidate {
         this.imageBytes = imageBytes;
     }
 
-    public candidate(String name, String politicParty, byte[] imageBytes) {
+    public candidate(int id, String name, String politicParty, byte[] imageBytes) {
+        this.id = id;
         this.name = name;
         this.politicParty = politicParty;
         this.imageBytes = imageBytes;
     }
+
+    
     
 
     public int getId() {

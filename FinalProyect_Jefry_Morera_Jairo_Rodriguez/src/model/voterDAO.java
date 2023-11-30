@@ -10,8 +10,139 @@ import javax.swing.JOptionPane;
 
 public class voterDAO {
 
+    private int selectedCandidateId = -1;
+
     public voterDAO() {
 
+    }
+
+    public int getSelectedCandidateId() {
+        return selectedCandidateId;
+    }
+
+    public int getVoterId(String idNumber) {
+        String query = "SELECT id FROM voters WHERE id_number = ?";
+        int voterId = -1; // Valor predeterminado si no se encuentra el votante
+        DBConnectionJava dbConnection = new DBConnectionJava();
+
+        try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                voterId = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnection.disconnect();
+        }
+
+        return voterId;
+    }
+
+    public boolean authenticateVoter(String idNumber) {
+        DBConnectionJava db = new DBConnectionJava();
+        boolean isAuthenticated = false;
+        String sql = "SELECT * FROM voters WHERE id_number = ?";
+
+        try {
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ps.setString(1, idNumber);
+            ResultSet resultSet = ps.executeQuery();
+
+            // Si hay un resultado, el votante está autenticado
+            isAuthenticated = resultSet.next();
+        } catch (SQLException e) {
+            System.err.println("Error al autenticar el votante: " + e.getMessage());
+        } finally {
+            db.disconnect();
+        }
+        return isAuthenticated;
+    }
+
+    public boolean checkVoterExistence(String idNumber) {
+        String query = "SELECT id FROM voters WHERE id_number = ?";
+        boolean voterExists = false;
+        DBConnectionJava dbConnection = new DBConnectionJava();
+
+        try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Si el resultado contiene una fila, significa que el votante existe
+                voterExists = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnection.disconnect();
+        }
+
+        return voterExists;
+    }
+
+    // Método para autenticar al votante
+    public boolean authenticateVoter(String idNumber, String password) {
+        String query = "SELECT id FROM voters WHERE id_number = ? AND password = ?";
+        boolean isAuthenticated = false;
+        DBConnectionJava dbConnection = new DBConnectionJava();
+
+        try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idNumber);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Si el resultado contiene una fila, significa que la autenticación fue exitosa
+                isAuthenticated = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnection.disconnect();
+        }
+
+        return isAuthenticated;
+    }
+
+    // Método para verificar si el votante ya ha votado
+    public boolean hasVoted(String idNumber) {
+        String query = "SELECT id FROM voters WHERE id_number = ? AND has_voted = 1";
+        boolean hasVoted = false;
+        DBConnectionJava dbConnection = new DBConnectionJava();
+
+        try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Si el resultado contiene una fila, significa que el votante ya ha votado
+                hasVoted = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnection.disconnect();
+        }
+
+        return hasVoted;
+    }
+
+    // Método para marcar al votante como que ha votado
+    public void markAsVoted(String idNumber) {
+        String query = "UPDATE voters SET has_voted = 1 WHERE id_number = ?";
+        DBConnectionJava dbConnection = new DBConnectionJava();
+
+        try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idNumber);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnection.disconnect();
+        }
     }
 
     // Method to create a new voter record in the database
@@ -59,8 +190,6 @@ public class voterDAO {
         }
         return voters;
     }
-
-
 
     public void updateVoter(voter voter) {
         DBConnectionJava db = new DBConnectionJava();
