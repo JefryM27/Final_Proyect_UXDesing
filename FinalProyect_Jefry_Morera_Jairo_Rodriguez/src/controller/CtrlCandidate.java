@@ -1,6 +1,5 @@
 package controller;
 
-import controller.Validation;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +14,10 @@ import model.ImageResizer;
 import model.candidate;
 import model.candidateDAO;
 
+/**
+ *
+ * @author jefry
+ */
 public class CtrlCandidate {
 
     candidateDAO candidateDAO = new candidateDAO();
@@ -23,18 +26,18 @@ public class CtrlCandidate {
     private JScrollPane scrollPane;
     private JLabel lblImage;
     private File selectedImageFile;
-
+// Constructor: Initializes the JTable and sets up the candidateDAO.
     public CtrlCandidate() {
         table = new JTable();
         scrollPane = new JScrollPane(table);
         this.candidateDAO = new candidateDAO();
 
     }
-
+// Initializes the UI with the provided JLabel for displaying images.
     public void initUI(JLabel lblImage) {
         this.lblImage = lblImage;
     }
-
+ // Loads candidate data into the specified JTable.
     public void loadCandidatesData(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -76,14 +79,14 @@ public class CtrlCandidate {
         }
         table.getColumnModel().getColumn(5).setMaxWidth(140); // Ajusta el ancho de la columna de la imagen
     }
-
+// Loads candidate data specifically for voters into the specified JTable.
     public void loadCandidatesDataVoter(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
         List<candidate> candidates = candidateDAO.readCandidatesVoter();
 
-        // Agregar un renderizador de imagen para la columna de imagen (suponiendo que la columna de la imagen es la 5ª columna)
+        // Add a render into the colunm 5 supossing that we alredy have one.
         table.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
 
         for (candidate candidate : candidates) {
@@ -117,7 +120,7 @@ public class CtrlCandidate {
         }
         table.getColumnModel().getColumn(3).setMaxWidth(140); // Ajusta el ancho de la columna de la imagen
     }
-
+// Adds a new candidate to the database.
     public void addCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File imageFile) {
         try {
             if (idNumber.getText().length() != 9) {
@@ -150,7 +153,7 @@ public class CtrlCandidate {
             JOptionPane.showMessageDialog(null, "No se pudo guardar el candidato, error: " + e.toString());
         }
     }
-
+// Displays a file chooser for selecting an image and resizes it for display in the JLabel.
     public void examinarImagen() {
         if (lblImage == null) {
             System.out.println("lblImage es null");
@@ -167,32 +170,32 @@ public class CtrlCandidate {
             selectedImageFile = fileChooser.getSelectedFile();
 
             try {
-                // Convertir el archivo seleccionado a un array de bytes
+                // Convert the file selected to a array de bytes
                 byte[] imageBytes = Files.readAllBytes(selectedImageFile.toPath());
 
-                // Redimensionar la imagen
+                
                 ImageResizer resizer = new ImageResizer();
                 byte[] resizedImageBytes = resizer.resizeImage(imageBytes, 200, 200); // Cambiar al tamaño deseado
 
-                // Mostrar la imagen redimensionada en el JLabel
+                // show the image into the Jlabel
                 lblImage.setIcon(new ImageIcon(ImageIO.read(new ByteArrayInputStream(resizedImageBytes))));
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error al cargar la imagen: " + e.getMessage());
             }
         }
     }
-
+// Updates an existing candidate in the database.
     public void updateCandidate(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty, File newImageFile) {
         try {
-            // Verificar si la longitud del número de identificación es correcta
+            
             if (idNumber.getText().length() == 9) {
-                // Validar los campos ingresados
+                
                 if (Validation.validateNumbers(idNumber.getText()) && Validation.validateNumbers(age.getText())
                         && Validation.validateLetters(name.getText()) && Validation.validateLetters(politicParty.getText())) {
                     // Leer el archivo de la nueva imagen como bytes
                     byte[] imageBytes = Files.readAllBytes(newImageFile.toPath());
 
-                    // Crear un objeto candidate con la información actualizada
+                    
                     candidate candidateToUpdate = new candidate(
                             this.id,
                             Integer.parseInt(idNumber.getText()),
@@ -201,10 +204,10 @@ public class CtrlCandidate {
                             politicParty.getText(),
                             imageBytes);
 
-                    // Llamar al método en candidateDAO para actualizar el candidato
+                    
                     candidateDAO.updateCandidate(candidateToUpdate, newImageFile);
 
-                    // Limpiar los campos y refrescar la tabla
+                   
                     clearFields(name, idNumber, age, politicParty);
                     refreshTable(table);
                 } else {
@@ -217,7 +220,7 @@ public class CtrlCandidate {
             JOptionPane.showMessageDialog(null, "No se pudo modificar el candidato, error: " + e.toString());
         }
     }
-
+// Retrieves the selected row from the JTable and populates corresponding text fields.
     public void selectedRow(JTable table, JTextField txtName, JTextField txtIdNumber, JTextField txtAge, JTextField txtPoliticParty, JLabel lblImage) {
         try {
             int row = table.getSelectedRow();
@@ -235,16 +238,15 @@ public class CtrlCandidate {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de selección, error: " + e.toString());
         }
-
     }
 
-    // Método para eliminar un candidato
+   // Deletes the selected candidate from the database.
     public void deleteCandidate() {
         candidateDAO.deleteCandidate(id);
         refreshTable(table);
     }
 
-    // Método para limpiar los campos del formulario
+   // Clears the text fields of the form.
     public void clearFields(JTextField name, JTextField idNumber, JTextField age, JTextField politicParty) {
         name.setText("");
         idNumber.setText("");
@@ -252,7 +254,7 @@ public class CtrlCandidate {
         politicParty.setText("");
     }
 
-    // Método para actualizar la tabla de candidatos
+    // Refreshes the displayed table with updated candidate data.
     public void refreshTable(JTable table) {
         List<candidate> candidates = candidateDAO.readCandidates();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -268,7 +270,7 @@ public class CtrlCandidate {
             });
         }
     }
-
+    // Getter for the selected image file.
     public File getSelectedImageFile() {
         return selectedImageFile;
     }

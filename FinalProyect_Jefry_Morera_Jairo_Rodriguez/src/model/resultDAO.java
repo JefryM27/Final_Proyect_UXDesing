@@ -1,4 +1,3 @@
-
 package model;
 
 import java.sql.PreparedStatement;
@@ -8,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-
 public class resultDAO {
+
     // Method to create a new result record in the database
     public void createResult(result result) {
         DBConnectionJava db = new DBConnectionJava();
@@ -26,7 +25,7 @@ public class resultDAO {
             db.disconnect();
         }
     }
-    
+
     // Method to retrieve a list of all results from the database
     public List<result> readResults() {
         DBConnectionJava db = new DBConnectionJava();
@@ -49,7 +48,7 @@ public class resultDAO {
         }
         return results;
     }
-    
+
     // Method to update an existing result record in the database
     public void updateResult(result result) {
         DBConnectionJava db = new DBConnectionJava();
@@ -58,8 +57,8 @@ public class resultDAO {
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(consultaSQL);
-        ps.setInt(1, result.getVoterId());
-        ps.setInt(2, result.getCandidateId());
+            ps.setInt(1, result.getVoterId());
+            ps.setInt(2, result.getCandidateId());
             ps.execute();
             JOptionPane.showMessageDialog(null, "Modificación Exitosa");
         } catch (SQLException e) {
@@ -68,7 +67,7 @@ public class resultDAO {
             db.disconnect();
         }
     }
-    
+
     // Method to delete a result record from the database by ID
     public void deleteVoter(int id) {
         DBConnectionJava db = new DBConnectionJava();

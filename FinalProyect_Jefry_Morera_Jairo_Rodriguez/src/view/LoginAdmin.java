@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 import model.*;
 
@@ -145,7 +142,6 @@ public class LoginAdmin extends javax.swing.JFrame {
             adm.setVisible(true);
             this.clear();
             this.dispose();
-            // Código para ocultar la ventana de inicio de sesión de Login si es necesario
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales incorrectos. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             this.clear();

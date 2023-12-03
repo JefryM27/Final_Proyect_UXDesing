@@ -44,6 +44,4 @@ public class result {
     public void setCandidateId(int candidateId) {
         this.candidateId = candidateId;
     }
-    
-    
 }

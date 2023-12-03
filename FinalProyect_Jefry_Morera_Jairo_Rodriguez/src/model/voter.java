@@ -30,8 +30,6 @@ public class voter {
     public voter() {
     }
     
-    
-
     public int getId() {
         return id;
     }
@@ -78,7 +76,5 @@ public class voter {
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-    
-    
+    }  
 }

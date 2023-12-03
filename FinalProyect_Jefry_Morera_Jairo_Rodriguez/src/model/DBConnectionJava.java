@@ -6,15 +6,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnectionJava {
-     // Constructor to establish a connection to the database
+     
     static String bd = "proyectux";
     static String port = "3306";
     static String login = "root";
-    static String password = "Jairo8553";
+    static String password = "m0r3r@2002";
     static String url = "jdbc:mariadb://localhost:" + port + "/" + bd;
 
     Connection connection = null;
-
+    // Constructor: Establishes a connection to the database when the class is instantiated.
     public DBConnectionJava() {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -27,15 +27,15 @@ public class DBConnectionJava {
             System.err.println("Error al establecer la conexion" + e.getMessage());
         }
     }
-
+    // Gets the current connection to the database.
     public Connection getConnection() {
         return connection;
     }
-
+    // Sets a specific connection (may be useful in certain cases).
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
-
+    // Closes the connection to the database.
     public void disconnect() {
         if (connection != null) {
             try {

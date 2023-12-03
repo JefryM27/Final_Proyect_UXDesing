@@ -16,7 +16,7 @@ public class candidateDAO {
     public candidateDAO() {
 
     }
-// Método para crear un nuevo registro de candidato en la base de datos con imagen
+// Creates a new candidate record in the database with an associated image.
 
     public void createCandidate(candidate candidate, byte[] imageBytes) {
         DBConnectionJava db = new DBConnectionJava();
@@ -40,7 +40,7 @@ public class candidateDAO {
             db.disconnect();
         }
     }
-
+//Retrieves a list of all candidates from the database.
     public List<candidate> readCandidates() {
         DBConnectionJava db = new DBConnectionJava();
         List<candidate> candidates = new ArrayList<>();
@@ -65,7 +65,7 @@ public class candidateDAO {
         }
         return candidates;
     }
-
+//Retrieves a list of candidates from the database suitable for voter display.
     public List<candidate> readCandidatesVoter() {
         DBConnectionJava db = new DBConnectionJava();
         List<candidate> candidates = new ArrayList<>();
@@ -88,7 +88,7 @@ public class candidateDAO {
         }
         return candidates;
     }
-
+//Updates an existing candidate record in the database with new information and image.
     public void updateCandidate(candidate candidate, File newImageFile) {
         if (candidate == null || newImageFile == null) {
             JOptionPane.showMessageDialog(null, "Los datos del candidato o la imagen son nulos.");
@@ -119,7 +119,7 @@ public class candidateDAO {
         }
     }
 
-    // Método para eliminar un registro de candidato de la base de datos por ID
+    // Deletes a candidate record from the database based on the provided ID.
     public void deleteCandidate(int id) {
         DBConnectionJava db = new DBConnectionJava();
         String sql = "DELETE FROM candidates WHERE id=?";

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 
 import controller.*;
@@ -23,13 +20,13 @@ public class voterUI extends javax.swing.JFrame {
         ctc.loadCandidatesDataVoter(tblCandidates);
 
     }
-
+    //This method retrieves the ID of the selected candidate from the JTable.
     public int getSelectedCandidateId() {
         int selectedRow = tblCandidates.getSelectedRow();
         if (selectedRow != -1) {
             return Integer.parseInt(tblCandidates.getValueAt(selectedRow, 0).toString());
         }
-        return -1; // Si no se ha seleccionado ninguna fila
+        return -1; // If no row is selected
     }
 
     @SuppressWarnings("unchecked")
@@ -125,16 +122,17 @@ public class voterUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //This method is invoked when the "Vote" button is clicked
     private void btnVoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoteActionPerformed
         selectedCandidateId = getSelectedCandidateId();
-        if (selectedCandidateId != -1) { // Verifica si el ID del candidato es válido
-            String idNumber = txtIdNumber.getText(); // Obtén el ID del votante desde el JTextField
-            if (voterDAO.authenticateVoter(idNumber)) { // Autentica al votante
-                if (!voterDAO.hasVoted(idNumber)) { // Verifica si el votante no ha votado aún
-                    // Registra el voto en la base de datos
+        if (selectedCandidateId != -1) { //  Checks if the candidate ID is valid
+            String idNumber = txtIdNumber.getText(); // Gets the voter ID from the JTextField
+            if (voterDAO.authenticateVoter(idNumber)) { // Authenticates the voter
+                if (!voterDAO.hasVoted(idNumber)) { // Checks if the voter has not voted yet
+                    // Registers the vote in the database
                     result newResult = new result(voterDAO.getVoterId(idNumber), selectedCandidateId);
-                    resultDAO.createResult(newResult); // Método para registrar el voto en la tabla results
-                    voterDAO.markAsVoted(idNumber); // Marca al votante como que ya ha votado
+                    resultDAO.createResult(newResult); //  Method to register the vote in the "results" table
+                    voterDAO.markAsVoted(idNumber); // Marks the voter as having voted
                     JOptionPane.showMessageDialog(null, "¡Su voto ha sido registrado correctamente!");
                 } else {
                     JOptionPane.showMessageDialog(null, "¡Usted ya ha votado!");
@@ -145,8 +143,6 @@ public class voterUI extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un candidato para votar.");
         }
-
-
     }//GEN-LAST:event_btnVoteActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

@@ -16,7 +16,7 @@ public class CtrlUser {
     userDAO user = new userDAO();
     rolDAO rolDAO = new rolDAO();
     int id;
-
+//Loads user data into the specified JTable, including user ID, name, password, and role.
     public void loadUserData(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         TableRowSorter<TableModel> order = new TableRowSorter<>(model);
@@ -34,7 +34,7 @@ public class CtrlUser {
         }
     }
 
-    //Method to add new user
+    //Adds a new user with the provided name, password, and role to the database.
     public void addUser(JTextField name, JTextField password, JComboBox<String> cbxRole) {
 
         try {
@@ -52,7 +52,7 @@ public class CtrlUser {
         }
     }
 
-    //Method to update the users from the table 
+    //Updates the user selected in the table with the provided name, password, and role.
     public void updateUser(JTextField name, JTextField password, JComboBox<String> cbxRole) {
         try {
             if (!Validation.validateLetters(name.getText())) {
@@ -71,7 +71,7 @@ public class CtrlUser {
         }
     }
     
-   //Method to select and access a table row 
+   //Retrieves and populates the text fields and JComboBox with the data of the selected user in the table.
     public void selectedRow(JTable table, JTextField name, JTextField password, JComboBox<String> cbxRole) {
         try {
             int row = table.getSelectedRow();
@@ -89,12 +89,12 @@ public class CtrlUser {
         }
     }
 
-    //Method to remove an user from the table
+    //Deletes the user selected in the table from the database.
     public void deleteUser() {
         this.user.deleteUser(id);
     }
 
-    //Method to clean the table fields 
+    //Clears the text fields of the user interface.
     public void clearFields(JTextField name, JTextField password) {
         name.setText("");
         password.setText("");

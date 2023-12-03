@@ -15,14 +15,14 @@ public class voterDAO {
     public voterDAO() {
 
     }
-
+//Gets the ID of the selected candidate.
     public int getSelectedCandidateId() {
         return selectedCandidateId;
     }
-
+//Retrieves the ID of a voter based on their ID number.
     public int getVoterId(String idNumber) {
         String query = "SELECT id FROM voters WHERE id_number = ?";
-        int voterId = -1; // Valor predeterminado si no se encuentra el votante
+        int voterId = -1; 
         DBConnectionJava dbConnection = new DBConnectionJava();
 
         try (Connection connection = dbConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -40,7 +40,7 @@ public class voterDAO {
 
         return voterId;
     }
-
+// Authenticates a voter based on their ID number.
     public boolean authenticateVoter(String idNumber) {
         DBConnectionJava db = new DBConnectionJava();
         boolean isAuthenticated = false;
@@ -51,7 +51,7 @@ public class voterDAO {
             ps.setString(1, idNumber);
             ResultSet resultSet = ps.executeQuery();
 
-            // Si hay un resultado, el votante está autenticado
+            
             isAuthenticated = resultSet.next();
         } catch (SQLException e) {
             System.err.println("Error al autenticar el votante: " + e.getMessage());
@@ -60,7 +60,7 @@ public class voterDAO {
         }
         return isAuthenticated;
     }
-
+//Checks if a voter with the given ID number exists in the database.
     public boolean checkVoterExistence(String idNumber) {
         String query = "SELECT id FROM voters WHERE id_number = ?";
         boolean voterExists = false;
@@ -71,7 +71,7 @@ public class voterDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Si el resultado contiene una fila, significa que el votante existe
+                
                 voterExists = true;
             }
         } catch (SQLException e) {
@@ -83,7 +83,7 @@ public class voterDAO {
         return voterExists;
     }
 
-    // Método para autenticar al votante
+    // Authenticates a voter based on their ID number and password.
     public boolean authenticateVoter(String idNumber, String password) {
         String query = "SELECT id FROM voters WHERE id_number = ? AND password = ?";
         boolean isAuthenticated = false;
@@ -95,7 +95,7 @@ public class voterDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Si el resultado contiene una fila, significa que la autenticación fue exitosa
+                
                 isAuthenticated = true;
             }
         } catch (SQLException e) {
@@ -107,7 +107,7 @@ public class voterDAO {
         return isAuthenticated;
     }
 
-    // Método para verificar si el votante ya ha votado
+    //  Checks if a voter has already voted based on their ID number.
     public boolean hasVoted(String idNumber) {
         String query = "SELECT id FROM voters WHERE id_number = ? AND has_voted = 1";
         boolean hasVoted = false;
@@ -118,7 +118,7 @@ public class voterDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Si el resultado contiene una fila, significa que el votante ya ha votado
+                
                 hasVoted = true;
             }
         } catch (SQLException e) {
@@ -130,7 +130,7 @@ public class voterDAO {
         return hasVoted;
     }
 
-    // Método para marcar al votante como que ha votado
+    // Marks a voter as having voted based on their ID number.
     public void markAsVoted(String idNumber) {
         String query = "UPDATE voters SET has_voted = 1 WHERE id_number = ?";
         DBConnectionJava dbConnection = new DBConnectionJava();
@@ -190,7 +190,7 @@ public class voterDAO {
         }
         return voters;
     }
-
+//Updates an existing voter record in the database with new information.
     public void updateVoter(voter voter) {
         DBConnectionJava db = new DBConnectionJava();
 
@@ -214,7 +214,7 @@ public class voterDAO {
         }
     }
 
-// Method to delete a voter record from the database by ID
+// Deletes a voter record from the database based on the provided ID.
     public void deleteVoter(int id) {
         DBConnectionJava db = new DBConnectionJava();
 
@@ -231,5 +231,4 @@ public class voterDAO {
             db.disconnect();
         }
     }
-
 }

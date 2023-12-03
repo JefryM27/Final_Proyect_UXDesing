@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 
 import controller.*;
@@ -17,8 +14,8 @@ public class adminUI extends javax.swing.JFrame {
     
     public adminUI() {
         initComponents();
-        ctc.initUI(lblImage); // Primero configura la interfaz
-        ctc.loadCandidatesData(tblCandidate); // Luego carga los datos en la tabla
+        ctc.initUI(lblImage); 
+        ctc.loadCandidatesData(tblCandidate); 
         this.ctv.loadVoterData(tblAdm);
         this.ctu.loadUserData(tblUsers);
         this.ctr.loadRolesToComboBox(cbxRoles);

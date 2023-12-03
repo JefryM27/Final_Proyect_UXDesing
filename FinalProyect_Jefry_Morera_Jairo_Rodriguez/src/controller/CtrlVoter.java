@@ -1,6 +1,5 @@
 package controller;
 
-import controller.Validation;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -8,7 +7,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import model.user;
 import model.voter;
 import model.voterDAO;
 
@@ -16,7 +14,8 @@ public class CtrlVoter {
 
     voterDAO voter = new voterDAO();
     int id;
-
+//Loads voter data into the specified JTable, including voter ID, name, ID number, age, email, and phone number.
+     
     public void loadVoterData(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         TableRowSorter<TableModel> order = new TableRowSorter<>(model);
@@ -26,18 +25,18 @@ public class CtrlVoter {
         List<voter> voters = voter.readVoters();
 
         for (voter voter : voters) {
-            // Get the name of the entity and the corresponding role
+            
 
             Object[] row = {voter.getId(), voter.getName(), voter.getIdNumber(), voter.getAge(), voter.getEmail(), voter.getPhoneNumber()};
             model.addRow(row);
         }
     }
 
-    //Method to add new voter
+    //Adds a new voter with the provided name, ID number, age, email, and phone number to the database.
     public void addVoter(JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
-        //Get the id number and validate if is equals to nine
+        
         if (idNumber.getText().length() == 9) {
-            //Get the id number and verify if the voter is already 
+             
             if (Validation.verificateIdNumberVoter(idNumber.getText())) {
                 JOptionPane.showMessageDialog(null, "El votante que desea registrar ya existe.");
             } else {
@@ -58,10 +57,10 @@ public class CtrlVoter {
             JOptionPane.showMessageDialog(null, "La longitud de la cédula no es valido, esta debe tener 9 digitos.");
         }
     }
-    //Method to update the voters from the table 
-
+    
+    //Adds a new voter with the provided name, ID number, age, email, and phone number to the database.
     public void updateVoter(JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
-        //Get the id number and validate if is equals to nine
+        
         if (idNumber.getText().length() == 9) {
             try {
                 if (!Validation.validateNumbers(idNumber.getText()) || !Validation.validateNumbers(age.getText()) || !Validation.validateEmail(email.getText()) || !Validation.validateNumbers(phoneNumber.getText())) {
@@ -78,7 +77,7 @@ public class CtrlVoter {
         }
     }
 
-//Method to select and access a table row 
+//Retrieves and populates the text fields with the data of the selected voter in the table.
     public void selectedRow(JTable table, JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
         try {
             int row = table.getSelectedRow();
@@ -96,13 +95,13 @@ public class CtrlVoter {
             JOptionPane.showMessageDialog(null, "Error de selección, error: " + e.toString());
         }
     }
-    //Method to remove an voter from the table
-
+    
+    //Deletes the voter selected in the table from the database.
     public void deleteVoter() {
         this.voter.deleteVoter(id);
     }
-    //Method to clean the table fields 
-
+    
+    //Clears the text fields of the user interface.
     public void clearFields(JTextField name, JTextField idNumber, JTextField age, JTextField email, JTextField phoneNumber) {
         name.setText("");
         idNumber.setText("");
