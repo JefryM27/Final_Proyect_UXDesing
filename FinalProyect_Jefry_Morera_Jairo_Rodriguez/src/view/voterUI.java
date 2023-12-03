@@ -134,6 +134,10 @@ public class voterUI extends javax.swing.JFrame {
                     resultDAO.createResult(newResult); //  Method to register the vote in the "results" table
                     voterDAO.markAsVoted(idNumber); // Marks the voter as having voted
                     JOptionPane.showMessageDialog(null, "¡Su voto ha sido registrado correctamente!");
+                    JOptionPane.showMessageDialog(null, "¡Gracias por su voto!");
+                    loginGeneral lg = new loginGeneral();
+                    lg.setVisible(true);
+                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "¡Usted ya ha votado!");
                 }
